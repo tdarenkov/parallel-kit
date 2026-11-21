@@ -2,6 +2,10 @@
 
 There are no version numbers: every push to main is an update. With auto-update on it arrives by itself; otherwise `claude plugin update parallel-kit@tdarenkov` takes the latest. Entries are by date.
 
+## 2026-11-21
+
+- The router's pointer to the price list resolves, and it no longer repeats `lookup`'s answer rules.
+
 ## 2026-11-20
 
 - `lookup` runs on `parallel-cli`, as Parallel's own search and extract skills do, and saves every result to `/tmp/parallel-<name>.json`, so a later question reads the file instead of searching again.

@@ -15,9 +15,7 @@ Question: $ARGUMENTS
 | Every entity matching a description (all X that Y) | FindAll: `/parallel-kit:brief` |
 | Web-sourced columns added to rows you have | Enrichment: `/parallel-kit:brief` |
 
-Costs: `brief/references/pricing.md`; `/parallel-kit:brief` shows the exact estimate before it runs anything.
+Costs: `../brief/references/pricing.md`; `/parallel-kit:brief` shows the exact estimate before it runs anything.
 
 - **Lookup:** write each question as what you need to know and why.
 - **Paid run:** do not start `parallel-cli research`, `findall` or `enrich` yourself. Say which of the three the question needs and run `/parallel-kit:brief`, which writes the brief, shows the cost and asks before it runs.
-
-Answer from the results: lead with the answer, cite every claim with a link the results returned, never one they did not.
