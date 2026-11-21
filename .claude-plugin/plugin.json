@@ -5,15 +5,6 @@
     "name": "tdarenkov"
   },
   "repository": "https://github.com/tdarenkov/parallel-kit",
-  "mcpServers": {
-    "parallel": {
-      "type": "http",
-      "url": "https://mcp.parallel.ai/mcp?login",
-      "headers": {
-        "x-parallel-mcp-config": "{\"web_search\":{\"model_choice\":[\"mode\",\"advanced_settings.max_results\"]}}"
-      }
-    }
-  },
   "license": "MIT",
   "icon": ".claude-plugin/icon.png",
   "homepage": "https://github.com/tdarenkov/parallel-kit"
