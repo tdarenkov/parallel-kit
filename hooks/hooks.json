@@ -7,6 +7,13 @@
           {"type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/parallel_subagent_guard.py\""}
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {"type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/lookup_return.py\""}
+        ]
+      }
     ]
   }
 }

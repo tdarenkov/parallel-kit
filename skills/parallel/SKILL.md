@@ -10,7 +10,7 @@ Question: $ARGUMENTS
 
 | Need | Use |
 | --- | --- |
-| Current facts, versions, prices, docs, a page's content | `parallel-kit:lookup` (Skill tool), every question and URL in one call |
+| Current facts, versions, prices, docs, a page's content | `parallel-kit:lookup` (Skill tool), one call per question, with its URLs |
 | A cited report on a broad question | Deep research: `/parallel-kit:brief` |
 | Every entity matching a description (all X that Y) | FindAll: `/parallel-kit:brief` |
 | Web-sourced columns added to rows you have | Enrichment: `/parallel-kit:brief` |

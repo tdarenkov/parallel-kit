@@ -2,6 +2,12 @@
 
 There are no version numbers: every push to main is an update. With auto-update on it arrives by itself; otherwise `claude plugin update parallel-kit@tdarenkov` takes the latest. Entries are by date.
 
+## 2026-11-25
+
+- When a lookup reports back, a hook asks the session whether the report answers the question or rests on pages read only in excerpts, so it sends those pages back to be read in full before answering.
+- Sessions and subagents reach for `lookup` for any fact from outside the repo, including how others solve a problem like yours, instead of WebSearch, WebFetch, the web-fetch agent or curl. Each call carries one question and its URLs.
+- `lookup` reads its saved results to the end instead of a cut-off printout, and reads whole pages up to 100,000 characters.
+
 ## 2026-11-21
 
 - The router's pointer to the price list resolves, and it no longer repeats `lookup`'s answer rules.
