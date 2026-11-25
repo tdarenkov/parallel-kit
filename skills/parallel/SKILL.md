@@ -17,5 +17,8 @@ Question: $ARGUMENTS
 
 Costs: `../brief/references/pricing.md`; `/parallel-kit:brief` shows the exact estimate before it runs anything.
 
-- **Lookup:** write each question as what you need to know and why.
+- **Lookups:** one goal per call, a concise, standalone sentence that names the key topic. Shape it by the question:
+  - A fact about a named thing: ask it as it is.
+  - Several things at once: split them into questions that can each be answered alone.
+  - How to solve your problem: step back to the general problem it is a case of, and ask that too.
 - **Paid run:** do not start `parallel-cli research`, `findall` or `enrich` yourself. Say which of the three the question needs and run `/parallel-kit:brief`, which writes the brief, shows the cost and asks before it runs.

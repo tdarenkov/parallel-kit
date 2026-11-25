@@ -4,6 +4,8 @@ There are no version numbers: every push to main is an update. With auto-update 
 
 ## 2026-11-25
 
+- Before a session's first lookup, and every few lookups after, a hook has it read the router, which now says how to shape a question: a fact about a named thing as it is, several things split apart, and how to solve a problem stepped back to the general problem as well.
+- `lookup` asks for the goal the way Parallel's docs do: a concise, standalone sentence that names the key topic.
 - When a lookup reports back, a hook asks the session whether the report answers the question or rests on pages read only in excerpts, so it sends those pages back to be read in full before answering.
 - Sessions and subagents reach for `lookup` for any fact from outside the repo, including how others solve a problem like yours, instead of WebSearch, WebFetch, the web-fetch agent or curl. Each call carries one question and its URLs.
 - `lookup` reads its saved results to the end instead of a cut-off printout, and reads whole pages up to 100,000 characters.
