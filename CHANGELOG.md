@@ -2,6 +2,13 @@
 
 There are no version numbers: every push to main is an update. With auto-update on it arrives by itself; otherwise `claude plugin update parallel-kit@tdarenkov` takes the latest. Entries are by date.
 
+## 2026-11-26
+
+- `lookup` is now two skills, `search` and `extract`, as Parallel ships them. A search answers from excerpts, and your session decides which pages to read in full with `extract`, instead of the agent deciding for it.
+- The router has your session pick the search mode: `basic` for a fact about a named thing, `advanced` for how to solve a problem like yours.
+- The question a session gets when a search or page read reports back now also follows one that ran in the foreground, because an earlier call was still running.
+- Named agents set up before this need `/parallel-kit:setup` run again, so their `skills:` list names `search` and `extract`.
+
 ## 2026-11-25
 
 - Before a session's first lookup, and every few lookups after, a hook has it read the router, which now says how to shape a question: a fact about a named thing as it is, several things split apart, and how to solve a problem stepped back to the general problem as well.

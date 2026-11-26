@@ -1,6 +1,6 @@
 ---
 name: lookup-agent
-description: The agent behind parallel-kit:lookup. Runs parallel-cli commands and reads the results they save.
+description: The agent behind parallel-kit:search and parallel-kit:extract. Runs parallel-cli commands and reads the results they save.
 tools: Bash
 ---
 

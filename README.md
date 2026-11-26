@@ -34,7 +34,7 @@ The problem isn't the tools. It's knowing which one to use, and when.
 
 A session left to itself sticks to the first side and forgets the second exists, or reaches for the second when a search would do.
 
-**The Fix**: one router, [`parallel`](./skills/parallel/SKILL.md), that the main session reaches for when a question may need the web. It decides between a lookup and a paid run, and points to what each costs.
+**The Fix**: one router, [`parallel`](./skills/parallel/SKILL.md), that the main session reaches for when a question may need the web. It decides between a search, a page read and a paid run, and points to what each costs.
 
 ### #2: Going deep should be a conversation
 
@@ -50,7 +50,7 @@ A session left to itself sticks to the first side and forgets the second exists,
 
 **The Fix**: two parts.
 
-- [`lookup`](./skills/lookup/SKILL.md) gives every session and subagent Parallel's search and fetch. It runs in its own agent, [`lookup-agent`](./agents/lookup-agent.md), which runs `parallel-cli` and hands back a short answer with its sources and the path of the saved results, in `/tmp/parallel-<name>.json`. The pages it read never fill your context.
+- [`search`](./skills/search/SKILL.md) and [`extract`](./skills/extract/SKILL.md) give every session and subagent Parallel's search and page reads, as Parallel's own two skills do. Each runs in its own agent, [`lookup-agent`](./agents/lookup-agent.md), which runs `parallel-cli` and hands back a short answer with its sources and the path of the saved results, in `/tmp/parallel-<name>.json`. The pages it read never fill your context. A search answers from excerpts; your session decides which pages to read in full with `extract`.
 - A [guard](./hooks/parallel_subagent_guard.py) on every Bash call: a subagent may run `parallel-cli` search, extract and fetch, and nothing that spends. The main session is never blocked.
 
 ## How it fits together
@@ -58,16 +58,17 @@ A session left to itself sticks to the first side and forgets the second exists,
 ```mermaid
 flowchart LR
     Q[Question] --> R{parallel}
-    R --> L[lookup: search + fetch]
+    R --> S[search]
+    R --> E[extract: read a page in full]
     R --> B[brief: deep run, after your yes]
 ```
 
-### A lookup: the same from your session or any subagent
+### A search or page read: the same from your session or any subagent
 
 ```mermaid
 flowchart LR
-    C[Your session or a subagent] -->|question| L[lookup]
-    L --> A[lookup-agent searches and reads with parallel-cli]
+    C[Your session or a subagent] -->|question or URLs| L[search or extract]
+    L --> A[lookup-agent runs parallel-cli]
     A -->|short answer with sources| C
 ```
 
@@ -81,11 +82,11 @@ flowchart LR
     P --> R[Result in parallel-results/]
 ```
 
-A subagent can't start a deep run. If its lookup finds the question needs one, it says so, and your session takes it from there. The guard refuses any paid `parallel-cli` call a subagent tries.
+A subagent can't start a deep run. If its search finds the question needs one, it says so, and your session takes it from there. The guard refuses any paid `parallel-cli` call a subagent tries.
 
 ### Harder questions, without a paid run
 
-The lookup agent searches in Parallel's default `basic` mode and switches to `advanced` (multi-step, agentic search) when a question needs it. It's still a lookup, priced in fractions of a cent, not a paid run.
+A search runs in Parallel's default `basic` mode. For a harder, multi-step question, such as how to solve a problem like yours, the router has your session ask for `advanced` (multi-step, agentic search). It's still a search, priced in fractions of a cent, not a paid run.
 
 ### What I kept from Parallel, and what I left out
 
@@ -93,8 +94,8 @@ The lookup agent searches in Parallel's default `basic` mode and switches to `ad
 | --- | --- |
 | `parallel-deep-research`, `parallel-findall`, `parallel-data-enrichment`, `status`, `result` | Kept word for word, as the references `brief` follows |
 | Task API guides and the pricing page | Kept word for word, minus the docs site's navigation note at the top of each page |
-| `parallel-web-search`, `parallel-web-extract` | Merged into `lookup` and trimmed |
-| `parallel-subagent` | Kept as `lookup-agent`, nearly word for word |
+| `parallel-web-search`, `parallel-web-extract` | Kept as `search` and `extract`, trimmed |
+| `parallel-subagent` | Kept as `lookup-agent`, nearly word for word, the agent both run in |
 | Parallel's MCP server | Left out: in a terminal agent the CLI costs far fewer context tokens, as Parallel's docs say |
 | `parallel-cli-setup` | Replaced by `setup` |
 | `parallel-monitor`, `parallel-memory`, `parallel-mcp-setup`, `parallel-search-setup`, `parallel-search-evaluation`, `parallel-api`, `migrate-to-parallel` | Left out: for building on Parallel, not for using it in a session |
@@ -114,15 +115,15 @@ claude plugin install parallel-kit@tdarenkov
 
 In a Claude Code session, once per machine. It will:
 
-- Offer to remove Parallel's own plugin, which competes with `lookup`
+- Offer to remove Parallel's own plugin, which competes with this kit's `search` and `extract`
 - Install and sign in `parallel-cli`, if needed
-- Offer to fix your named agents, so they can use the lookup (below)
+- Offer to fix your named agents, so they can use `search` and `extract` (below)
 - Offer to turn on auto-update
-- Run one real lookup to show it works
+- Run one real search to show it works
 
 Run it again any time; it redoes only what failed.
 
-**Why named agents need fixing:** a skill that runs in its own agent only gets the tools its caller has. A subagent with a fixed `tools:` list can use `lookup` only if that list includes `Skill`, so setup offers to add it.
+**Why named agents need fixing:** a skill that runs in its own agent only gets the tools its caller has. A subagent with a fixed `tools:` list can use `search` and `extract` only if that list includes `Skill`, so setup offers to add it.
 
 ### 3. That's it.
 
@@ -145,7 +146,8 @@ claude plugin update parallel-kit@tdarenkov
 
 **Model-invoked**
 
-- **[parallel](./skills/parallel/SKILL.md)**: the router: a lookup or a paid run, and where the costs are. You can also type it.
-- **[lookup](./skills/lookup/SKILL.md)**: every web search and page read, in its own agent, back as a short cited answer.
+- **[parallel](./skills/parallel/SKILL.md)**: the router: a search, a page read or a paid run, and where the costs are. You can also type it.
+- **[search](./skills/search/SKILL.md)**: every web search, in its own agent, back as a short cited answer from excerpts.
+- **[extract](./skills/extract/SKILL.md)**: every page read in full, in its own agent, for a known URL or a search result whose excerpts are not enough.
 
 Issues are welcome. Changes: [CHANGELOG.md](CHANGELOG.md). Security problems: [SECURITY.md](SECURITY.md). License: [MIT](LICENSE).
