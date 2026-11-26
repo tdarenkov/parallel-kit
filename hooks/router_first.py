@@ -1,15 +1,15 @@
-"""PreToolUse (Skill): a lookup waits for the router once per subagent, and in the main session once, then again every 4 lookups."""
+"""PreToolUse (Skill): a search or extract waits for the router once per subagent, and in the main session once, then again every 4 calls."""
 import json
 import os
 import re
 import sys
 import tempfile
 
-LOOKUP = re.compile(r"^(parallel-kit:)?lookup$")
+LOOKUP = re.compile(r"^(parallel-kit:)?(search|extract)$")
 ROUTER = re.compile(r"^(parallel-kit:)?parallel$")
 EVERY = 4
-REASON = ("Before this lookup, invoke parallel-kit:parallel (Skill tool) with the question, "
-          "then send the lookup again, written the way it says.")
+REASON = ("Before this search, invoke parallel-kit:parallel (Skill tool) with the question, "
+          "then send it again, written the way it says.")
 
 
 def state_path(event):

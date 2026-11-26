@@ -1,6 +1,6 @@
 {
   "name": "parallel-kit",
-  "description": "Parallel's web search and page reads through one lookup that keeps excerpts out of your context, a router that shows the cost before you spend, a brief for paid runs, and a guard so subagents can search but cannot spend. After install, run /parallel-kit:setup.",
+  "description": "Parallel's web search and page reads, each in its own agent so excerpts stay out of your context, a router that shows the cost before you spend, a brief for paid runs, and a guard so subagents can search but cannot spend. After install, run /parallel-kit:setup.",
   "author": {
     "name": "tdarenkov"
   },

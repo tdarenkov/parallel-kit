@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Set up parallel-kit after install, or check it again. Removes Parallel's own plugin if it competes, gets parallel-cli installed and signed in, fixes named agents, offers to turn on auto-update, then runs one real lookup.
+description: Set up parallel-kit after install, or check it again. Removes Parallel's own plugin if it competes, gets parallel-cli installed and signed in, fixes named agents, offers to turn on auto-update, then runs one real search.
 disable-model-invocation: true
 allowed-tools: Bash(claude plugin list *), Bash(command -v *), Bash(uname *), Bash(parallel-cli auth *)
 ---
@@ -11,11 +11,11 @@ Run the five steps in order, in this session. Each step checks first and acts on
 
 ## 1. Parallel's own plugin
 
-Its search and extract skills and its MCP server compete with `lookup`. `claude plugin list --json`, every entry whose `id` starts with `parallel@`. Ask: uninstall (`claude plugin uninstall <id>`), disable (`claude plugin disable <id>`), or keep. Kept → ✘, "sessions may use Parallel's plugin instead of `lookup`".
+Its search and extract skills and its MCP server compete with this kit's `search` and `extract`. `claude plugin list --json`, every entry whose `id` starts with `parallel@`. Ask: uninstall (`claude plugin uninstall <id>`), disable (`claude plugin disable <id>`), or keep. Kept → ✘, "sessions may use Parallel's plugin instead of this kit's".
 
 ## 2. `parallel-cli` (required)
 
-Every lookup and every paid run uses it.
+Every search, page read and paid run uses it.
 
 - `command -v parallel-cli`. Missing: offer to install. On macOS (`uname -s` is `Darwin`): `brew install parallel-web/tap/parallel-cli`. On Linux: `pipx install "parallel-web-tools[cli]"`, then `pipx ensurepath` (if `pipx` is missing too, say to install it with the system's package manager).
 - `parallel-cli auth --json`: the field `authenticated` must be `true`. If not: a user with no Parallel account signs up first at https://platform.parallel.ai. Then hand the user `! parallel-cli login` to type; it opens a browser for device sign-in. Check again.
@@ -24,12 +24,12 @@ Every lookup and every paid run uses it.
 
 ## 3. Named agents
 
-A subagent with a fixed `tools:` list can use the lookup only if that list has `Skill`. Look at every `*.md` in `~/.claude/agents/` and in the current repo's `.claude/agents/` whose frontmatter has a `tools:` line without `Skill`.
+A subagent with a fixed `tools:` list can use `search` and `extract` only if that list has `Skill`. Look at every `*.md` in `~/.claude/agents/` and in the current repo's `.claude/agents/` whose frontmatter has a `tools:` line without `Skill`.
 
 For each, show the diff and, on a yes, edit its frontmatter:
 
 - `tools:` gains `Skill`;
-- `skills:` gains `parallel-kit:lookup` (add the line if there is none).
+- `skills:` gains `parallel-kit:search` and `parallel-kit:extract` (add the line if there is none).
 
 None found → ✔. Say that agents in other repos need `/parallel-kit:setup` run there too.
 
@@ -45,7 +45,7 @@ Updates then arrive in the background; they load on `/reload-plugins` or the nex
 
 ## 5. Working check
 
-Call the Skill tool with `parallel-kit:lookup` and the argument: "What is the latest released version of Claude Code? I need the version number to check that this lookup works." ✔ if the answer cites a source link and names a `/tmp/parallel-*.json` file. ✘ otherwise: show its reply, and point to step 2 and the troubleshooting below.
+Call the Skill tool with `parallel-kit:search` and the argument: "What is the latest released version of Claude Code? I need the version number to check that this search works." ✔ if the answer cites a source link and names a `/tmp/parallel-*.json` file. ✘ otherwise: show its reply, and point to step 2 and the troubleshooting below.
 
 ## Troubleshooting
 
